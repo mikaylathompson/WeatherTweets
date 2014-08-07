@@ -1,3 +1,4 @@
 auth_data.json
 *.pyc
 *.ipynb
+node*

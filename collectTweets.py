@@ -53,7 +53,7 @@ with open(save_file, 'a') as output:
                 idata['country'] = item['place']['country']
                 idata['location'] = item['user']['location']
                 idata['time'] = item['created_at']
-                output.write(json.dumps(idata)+"\n")
+                output.write(json.dumps(idata)+",\n")
                 print "Added: ", item['text']
                 print item['place']['full_name']
                 print
