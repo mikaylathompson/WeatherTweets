@@ -15,15 +15,21 @@ var x = d3.scale.linear()
     .range([0,width])
     .domain([-124,-66]);
 
-d3.json("mini_storm_texts_1.json", function(error, data) {
+d3.json("storm_texts.json", function(error, data) {
     svg.selectAll("circle")
         .data(data)
       .enter().append("circle")
         .style("fill", function(d) {
-            if((d.text.indexOf("hunder")>-1) || (d.text.indexOf("HUNDER")>-1) ) {
-                return "coral";
+            if((d.text.indexOf("hunder")>-1) || (d.text.indexOf("HUNDER")>-1)) {
+                return "darkred";
             }
-            return "steelblue";})
+            if ((d.text.indexOf("ightning")!=-1) || (d.text.indexOf("IGHTNING")!=-1)) {
+                return "gold";
+            }
+            if((d.text.indexOf("torm")>-1) || (d.text.indexOf("TORM")>-1)) {
+                return "slategray";
+            }
+            return "dodgerblue";})
         .attr("r", 5)
         .attr("cx", function(d) {return x(d.coords[0]); } )
         .attr("cy", function(d) {return y(d.coords[1]); } )
