@@ -15,21 +15,23 @@ var x = d3.scale.linear()
     .range([0,width])
     .domain([-124,-66]);
 
-d3.json("storm_texts.json", function(error, data) {
+d3.json("storm_texts_08-08.json", function(error, data) {
     svg.selectAll("circle")
         .data(data)
       .enter().append("circle")
         .style("fill", function(d) {
-            if((d.text.indexOf("hunder")>-1) || (d.text.indexOf("HUNDER")>-1)) {
-                return "darkred";
+            if(d.text.toLowerCase().indexOf("thunder")>-1) {
+//                return "rgba(139,0,0,.3)";
+                return "rgba(255,215,0,.5)";
             }
-            if ((d.text.indexOf("ightning")!=-1) || (d.text.indexOf("IGHTNING")!=-1)) {
-                return "gold";
+            if (d.text.toLowerCase().indexOf("lightning")!=-1) {
+                return "rgba(255,215,0,.5)";
             }
-            if((d.text.indexOf("torm")>-1) || (d.text.indexOf("TORM")>-1)) {
-                return "slategray";
+            if (d.text.toLowerCase().indexOf("storm")>-1) {
+                return "rgba(255,215,0,.5)";
+//                return "rgba(112,128,144,.3)";
             }
-            return "dodgerblue";})
+            return "rgba(30,144,255,.3)";})
         .attr("r", 5)
         .attr("cx", function(d) {return x(d.coords[0]); } )
         .attr("cy", function(d) {return y(d.coords[1]); } )

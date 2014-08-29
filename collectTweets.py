@@ -6,7 +6,7 @@ from TwitterAPI import TwitterAPI
 
 storm_words = ["storm", "rain", "thunder", "lightning","thunderstorm",
                 "downpour","cloudburst","raining", "thundering","downpouring","storming"]
-save_file = "storm_texts.json"
+save_file = "storm_texts_08-08.json"
 
 
 
@@ -14,7 +14,9 @@ def isUsefulTweet(tweet):
     text = tweet['text'].lower()
     if "hpa" in text or "baro" in text or "mph" in text or "nws" in text:
         return False
-    if (item['coordinates'] is None):
+    if (tweet['coordinates'] is None):
+        return False
+    if (tweet['place']['country'] != "United States"):
         return False
     return True
 
@@ -28,21 +30,11 @@ r = api.request('statuses/filter', {'track':storm_words})
 assert(r.stream)
 
 count = 0
-# for item in r.get_iterator():
-#     if (count < 10):
-#         if isUsefulTweet(item):
-#             count += 1
-#             print item['text']
-#             if item['place'] is not None:
-#                 print item['place']['full_name']
-#             print
-#     else:
-#         break
 
 with open(save_file, 'a') as output:
     try:
+        output.write("[")
         for item in r.get_iterator():
-            # print "Found a tweet"
             if isUsefulTweet(item):
                 count += 1
                 idata = {}
@@ -53,11 +45,14 @@ with open(save_file, 'a') as output:
                 idata['country'] = item['place']['country']
                 idata['location'] = item['user']['location']
                 idata['time'] = item['created_at']
-                output.write(json.dumps(idata)+",\n")
-                print "Added: ", item['text']
+                if (count > 1):
+                    output.write(",\n")
+                output.write(json.dumps(idata))
+                print item['text']
                 print item['place']['full_name']
                 print
     except KeyboardInterrupt:
+        output.write("]")
         print "\n", count, "items added to file."
         sys.exit()
 
